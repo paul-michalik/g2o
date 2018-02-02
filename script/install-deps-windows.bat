@@ -50,6 +50,6 @@ if not exist "%VcPkgDir%" (
 rem ==============================
 rem Upgrade and Install packages.
 rem ==============================
-set "VcPkgDeps=eigen3 suitesparse"
+set "VcPkgDeps=eigen3 suitesparse openblas clapack ceres"
 call "%VcPkgDir%\vcpkg.exe" upgrade %VcPkgDeps% --no-dry-run --triplet %VcPkgTriplet%
 call "%VcPkgDir%\vcpkg.exe" install %VcPkgDeps% --triplet %VcPkgTriplet%

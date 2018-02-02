@@ -6,7 +6,7 @@ set "BuildType=Release"
 
 if NOT "%~1"=="" set "Platform=%~1"
 if NOT "%~2"=="" set "Toolset=%~2"
-if NOT "%~3"=="" set "BuildType=%~3" 
+if NOT "%~3"=="" set "BuildType=%~3"
 
 rem ----------------------------------
 rem Locate vcpkg using environment variables

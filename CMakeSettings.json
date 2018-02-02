@@ -8,13 +8,9 @@
             "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
             "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\install\\${name}",
             "cmakeCommandArgs": "",
-            "buildCommandArgs": "/p:MultiProcessorCompilation=true",
+            "buildCommandArgs": "",
             "ctestCommandArgs": "",
             "variables": [
-                {
-                    "name": "CMAKE_BUILD_TYPE",
-                    "value": "Debug"
-                },
                 {
                     "name": "VCPKG_TARGET_TRIPLET",
                     "value": "x64-windows"
@@ -22,27 +18,20 @@
                 {
                     "name": "CMAKE_TOOLCHAIN_FILE",
                     "value": "${env.USERPROFILE}\\.vcpkg\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
-                },
-                {
-                    "name": "G2O_BUILD_EXAMPLES",
-                    "value": "ON"
                 }
             ]
         },
         {
             "name": "x64-Release",
             "generator": "Visual Studio 15 2017 Win64",
+            "configurationType": "RelWithDebInfo",
             "inheritEnvironments": [ "msvc_x64_x64" ],
             "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
             "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\install\\${name}",
             "cmakeCommandArgs": "",
-            "buildCommandArgs": "/m",
+            "buildCommandArgs": "-v",
             "ctestCommandArgs": "",
             "variables": [
-                {
-                    "name": "CMAKE_BUILD_TYPE",
-                    "value": "Release"
-                },
                 {
                     "name": "VCPKG_TARGET_TRIPLET",
                     "value": "x64-windows"

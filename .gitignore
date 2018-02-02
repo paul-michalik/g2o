@@ -1,11 +1,6 @@
 build*
 lib
 bin
+.vs
 .vscode
 /products/*
-/.vs/config
-/.vs/g2o/v15
-/.vs/slnx.sqlite
-/.vs/VSWorkspaceState.json
-/.vs/ProjectSettings.json
-/.vs/slnx.sqlite-journal

@@ -1,0 +1,17 @@
+{
+    "version": "0.2.1",
+    "tasks": [
+        {
+            "taskName": "task-configure",
+            "appliesTo": "scripts/windows/configure.bat",
+            "command": "${workspaceRoot}\\scripts\\windows\\configure.bat",
+            "type": "launch"
+        },
+        {
+            "taskName": "task-bootstrap",
+            "appliesTo": "scripts/windows/bootstrap.bat",
+            "command": "${workspaceRoot}\\scripts\\windows\\bootstrap.bat",
+            "type": "launch"
+        }
+    ]
+}

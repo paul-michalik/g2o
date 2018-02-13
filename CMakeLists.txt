@@ -3,6 +3,13 @@ SET(CMAKE_LEGACY_CYGWIN_WIN32 0)
 
 PROJECT(g2o)
 
+function(print_list list)
+    message(${list}:)
+    foreach(l ${${list}})
+        message(${l})
+    endforeach()
+endfunction()
+
 # The library prefix
 SET(LIB_PREFIX g2o_)
 
@@ -98,10 +105,6 @@ OPTION (G2O_USE_CHOLMOD "Build g2o with CHOLMOD support" ON)
 FIND_PACKAGE(Cholmod)
 FIND_PACKAGE(BLAS)
 FIND_PACKAGE(LAPACK)
-
-message("CHOLMOD_FOUND = " ${CHOLMOD_FOUND})
-message("BLAS_FOUND = " ${BLAS_FOUND})
-message("LAPACK_FOUND = " ${LAPACK_FOUND})
 
 IF(G2O_USE_CHOLMOD AND CHOLMOD_FOUND AND BLAS_FOUND AND LAPACK_FOUND)
   MESSAGE(STATUS "Found CHOLMOD and its dependencies")

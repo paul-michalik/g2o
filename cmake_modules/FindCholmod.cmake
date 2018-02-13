@@ -5,13 +5,6 @@ if (CHOLMOD_INCLUDE_DIR AND CHOLMOD_LIBRARIES)
   set(CHOLMOD_FIND_QUIETLY TRUE)
 endif (CHOLMOD_INCLUDE_DIR AND CHOLMOD_LIBRARIES)
 
-function(print_list list)
-    message(${list}:)
-    foreach(l ${${list}})
-        message(${l})
-    endforeach()
-endfunction()
-
 find_path(CHOLMOD_INCLUDE_DIR
   NAMES
   cholmod.h
@@ -27,15 +20,11 @@ find_library(CHOLMOD_LIBRARY
     NAMES cholmod libcholmod 
     PATHS $ENV{CHOLMODDIR} ${LIB_INSTALL_DIR})
 
-print_list(CHOLMOD_LIBRARY)
-
 set(CHOLMOD_LIBRARIES ${CHOLMOD_LIBRARY})
 
 if(CHOLMOD_LIBRARIES)
 
   get_filename_component(CHOLMOD_LIBDIR ${CHOLMOD_LIBRARIES} PATH)
-
-  message(CHOLMOD_LIBDIR = ${CHOLMOD_LIBDIR})
 
   find_library(AMD_LIBRARY 
     NAMES amd libamd 
@@ -48,8 +37,6 @@ if(CHOLMOD_LIBRARIES)
 
 endif(CHOLMOD_LIBRARIES)
 
-print_list(CHOLMOD_LIBRARIES)
-
 if(CHOLMOD_LIBRARIES)
 
   find_library(COLAMD_LIBRARY NAMES colamd libcolamd PATHS ${CHOLMOD_LIBDIR} $ENV{CHOLMODDIR} ${LIB_INSTALL_DIR})
@@ -60,8 +47,6 @@ if(CHOLMOD_LIBRARIES)
   endif ()
 
 endif(CHOLMOD_LIBRARIES)
-
-print_list(CHOLMOD_LIBRARIES)
 
 if(CHOLMOD_LIBRARIES)
 
@@ -74,8 +59,6 @@ if(CHOLMOD_LIBRARIES)
 
 endif(CHOLMOD_LIBRARIES)
 
-print_list(CHOLMOD_LIBRARIES)
-
 if(CHOLMOD_LIBRARIES)
 
   find_library(CCOLAMD_LIBRARY NAMES ccolamd libccolamd PATHS ${CHOLMOD_LIBDIR} $ENV{CHOLMODDIR} ${LIB_INSTALL_DIR})
@@ -87,8 +70,6 @@ if(CHOLMOD_LIBRARIES)
 
 endif(CHOLMOD_LIBRARIES)
 
-print_list(CHOLMOD_LIBRARIES)
-
 if(CHOLMOD_LIBRARIES)
 
   find_library(CHOLMOD_METIS_LIBRARY NAMES metis libmetis PATHS ${CHOLMOD_LIBDIR} $ENV{CHOLMODDIR} ${LIB_INSTALL_DIR})
@@ -97,8 +78,6 @@ if(CHOLMOD_LIBRARIES)
   endif ()
 
 endif(CHOLMOD_LIBRARIES)
-
-print_list(CHOLMOD_LIBRARIES)
 
 if(CHOLMOD_LIBRARIES)
   find_library(CHOLMOD_SUITESPARSECONFIG_LIBRARY NAMES suitesparseconfig

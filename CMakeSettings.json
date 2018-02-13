@@ -9,9 +9,13 @@
             "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
             "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\install\\${name}",
             "cmakeCommandArgs": "",
-            "buildCommandArgs": "-v",
+            "buildCommandArgs": "/m",
             "ctestCommandArgs": "",
             "variables": [
+                {
+                    "name": "CMAKE_BUILD_TYPE",
+                    "value": "Debug"
+                },
                 {
                     "name": "VCPKG_TARGET_TRIPLET",
                     "value": "x64-windows"
@@ -34,9 +38,13 @@
             "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
             "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\install\\${name}",
             "cmakeCommandArgs": "",
-            "buildCommandArgs": "-v",
+            "buildCommandArgs": "/m",
             "ctestCommandArgs": "",
             "variables": [
+                {
+                    "name": "CMAKE_BUILD_TYPE",
+                    "value": "Release"
+                },
                 {
                     "name": "VCPKG_TARGET_TRIPLET",
                     "value": "x64-windows"

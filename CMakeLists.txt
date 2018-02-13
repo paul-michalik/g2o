@@ -95,14 +95,10 @@ ENDIF()
 # For building the CHOLMOD / CSPARSE solvers
 OPTION (G2O_USE_CHOLMOD "Build g2o with CHOLMOD support" ON)
 
-FIND_PACKAGE(SuiteSparse)
-if(NOT CHOLMOD_FOUND)
-    FIND_PACKAGE(CHOLMOD)
-endif()
+FIND_PACKAGE(Cholmod)
 FIND_PACKAGE(BLAS)
 FIND_PACKAGE(LAPACK)
 
-message("G2O_USE_CHOLMOD = " ${G2O_USE_CHOLMOD})
 message("CHOLMOD_FOUND = " ${CHOLMOD_FOUND})
 message("BLAS_FOUND = " ${BLAS_FOUND})
 message("LAPACK_FOUND = " ${LAPACK_FOUND})
@@ -116,9 +112,7 @@ ENDIF()
 
 OPTION (G2O_USE_CSPARSE "Build g2o with CSParse support" ON)
 
-if(NOT CSPARSE_FOUND)
-    FIND_PACKAGE(CSparse)
-endif()
+FIND_PACKAGE(CSparse)
 IF (G2O_USE_CSPARSE)
   IF(CSPARSE_FOUND)
     SET(BUILD_CSPARSE OFF CACHE BOOL "Build local CSparse library")

@@ -8,7 +8,7 @@
             "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
             "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\install\\${name}",
             "cmakeCommandArgs": "",
-            "buildCommandArgs": "/m",
+            "buildCommandArgs": "/p:MultiProcessorCompilation=true",
             "ctestCommandArgs": "",
             "variables": [
                 {

@@ -20,7 +20,7 @@ set "BuildDir=%~dp0..\..\products\cmake.msbuild.windows.%Platform%.%Toolset%"
 if not exist "%BuildDir%" mkdir "%BuildDir%"
 pushd "%BuildDir%"
 
-call cmake.exe -G "%CMakeGeneratorName%" -DG2O_BUILD_APPS=ON -DG2O_BUILD_EXAMPLES=ON" -DVCPKG_TARGET_TRIPLET=%VcPkgTriplet% -DCMAKE_TOOLCHAIN_FILE="%VcPkgDir%\scripts\buildsystems\vcpkg.cmake" "%~dp0..\.."
+call cmake.exe -G "%CMakeGeneratorName%" -DG2O_BUILD_APPS=ON -DG2O_BUILD_EXAMPLES=ON -DVCPKG_TARGET_TRIPLET=%VcPkgTriplet% -DCMAKE_TOOLCHAIN_FILE="%VcPkgDir%\scripts\buildsystems\vcpkg.cmake" "%~dp0..\.."
 
 popd
 endlocal & set "BuildDir=%BuildDir%" & set "BuildType=%BuildType%"

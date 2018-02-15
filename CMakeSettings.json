@@ -50,6 +50,10 @@
                 {
                     "name": "CMAKE_TOOLCHAIN_FILE",
                     "value": "${env.USERPROFILE}\\.vcpkg\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+                },
+                {
+                    "name": "G2O_BUILD_EXAMPLES",
+                    "value": "ON"
                 }
             ]
         },

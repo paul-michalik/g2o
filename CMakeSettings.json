@@ -1,0 +1,103 @@
+{
+    // See https://go.microsoft.com//fwlink//?linkid=834763 for more information about this file.
+    "configurations": [
+        {
+            "name": "x64-Debug",
+            "generator": "Visual Studio 15 2017 Win64",
+            "configurationType": "Debug",
+            "inheritEnvironments": [ "msvc_x64_x64" ],
+            "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
+            "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\install\\${name}",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "/m",
+            "ctestCommandArgs": "",
+            "variables": [
+                {
+                    "name": "CMAKE_BUILD_TYPE",
+                    "value": "Debug"
+                },
+                {
+                    "name": "VCPKG_TARGET_TRIPLET",
+                    "value": "x64-windows"
+                },
+                {
+                    "name": "CMAKE_TOOLCHAIN_FILE",
+                    "value": "${env.USERPROFILE}\\.vcpkg\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+                },
+                {
+                    "name": "G2O_BUILD_EXAMPLES",
+                    "value": "ON"
+                }
+            ]
+        },
+        {
+            "name": "x64-Release",
+            "generator": "Visual Studio 15 2017 Win64",
+            "configurationType": "RelWithDebInfo",
+            "inheritEnvironments": [ "msvc_x64_x64" ],
+            "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
+            "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\install\\${name}",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "/m",
+            "ctestCommandArgs": "",
+            "variables": [
+                {
+                    "name": "CMAKE_BUILD_TYPE",
+                    "value": "Release"
+                },
+                {
+                    "name": "VCPKG_TARGET_TRIPLET",
+                    "value": "x64-windows"
+                },
+                {
+                    "name": "CMAKE_TOOLCHAIN_FILE",
+                    "value": "${env.USERPROFILE}\\.vcpkg\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+                },
+                {
+                    "name": "G2O_BUILD_EXAMPLES",
+                    "value": "ON"
+                }
+            ]
+        },
+        {
+            "name": "Linux-Debug",
+            "generator": "Unix Makefiles",
+            "remoteMachineName": "${defaultRemoteMachineName}",
+            "configurationType": "Debug",
+            "remoteCMakeListsRoot": "/var/tmp/src/${workspaceHash}/${name}",
+            "cmakeExecutable": "/usr/local/bin/cmake",
+            "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
+            "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\install\\${name}",
+            "remoteBuildRoot": "/var/tmp/build/${workspaceHash}/build/${name}",
+            "remoteInstallRoot": "/var/tmp/build/${workspaceHash}/install/${name}",
+            "remoteCopySources": true,
+            "remoteCopySourcesOutputVerbosity": "Normal",
+            "remoteCopySourcesConcurrentCopies": "10",
+            "remoteCopySourcesMethod": "sftp",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "",
+            "ctestCommandArgs": "",
+            "inheritEnvironments": [ "linux-x64" ]
+        },
+        {
+            "name": "Linux-Release",
+            "generator": "Unix Makefiles",
+            "remoteMachineName": "${defaultRemoteMachineName}",
+            "configurationType": "Release",
+            "remoteCMakeListsRoot": "/var/tmp/src/${workspaceHash}/${name}",
+            "cmakeExecutable": "/usr/local/bin/cmake",
+            "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
+            "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\install\\${name}",
+            "remoteBuildRoot": "/var/tmp/build/${workspaceHash}/build/${name}",
+            "remoteInstallRoot": "/var/tmp/build/${workspaceHash}/install/${name}",
+            "remoteCopySources": true,
+            "remoteCopySourcesOutputVerbosity": "Normal",
+            "remoteCopySourcesConcurrentCopies": "10",
+            "remoteCopySourcesMethod": "sftp",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "",
+            "ctestCommandArgs": "",
+            "inheritEnvironments": [ "linux-x64" ]
+        }
+    ]
+}

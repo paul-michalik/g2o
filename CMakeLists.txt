@@ -3,6 +3,13 @@ SET(CMAKE_LEGACY_CYGWIN_WIN32 0)
 
 PROJECT(g2o)
 
+function(print_list list)
+    message(${list}:)
+    foreach(l ${${list}})
+        message(${l})
+    endforeach()
+endfunction()
+
 # The library prefix
 SET(LIB_PREFIX g2o_)
 

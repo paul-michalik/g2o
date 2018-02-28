@@ -64,7 +64,6 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -command "Invoke-WebRequest 'h
 powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('libQGLViewer-2.7.1.zip', './../../Thirdparty/'); }"
 del libQGLViewer-2.7.1.zip
 
-set "CurrDir=%~dp0"
 set "QGLViewerPath=%~dp0..\..\Thirdparty\libQGLViewer-2.7.1\"
 
 call "%PROGRAMFILES(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" %Platform%
@@ -72,10 +71,7 @@ call "%PROGRAMFILES(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Bu
 set Path=%VcPkgDir%\installed\%VcPkgTriplet%\tools\qt5;%Path%
 cd /d %QGLViewerPath%\QGLViewer
 call qmake %QGLViewerPath%\libQGLViewer-2.7.1.pro -spec win32-msvc
-set "CL=/MP"
 call nmake
 set "QGLVIEWERROOT=%QGLViewerPath%\QGLViewer"
 
-echo "%CurrDir%"
-cd /d %CurrDir%
 

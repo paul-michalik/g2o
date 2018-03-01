@@ -31,6 +31,7 @@
 #include "g2o/core/base_binary_edge.h"
 #include "g2o/core/base_unary_edge.h"
 #include "g2o/types/slam3d/se3_ops.h"
+#include "g2o/core/hyper_graph_action.h"
 #include "types_sba.h"
 #include <Eigen/Geometry>
 
@@ -101,6 +102,29 @@ public:
   }
 };
 
+/**
+ * \brief write the vertex to some Gnuplot data file
+ */
+class VertexSE3ExpmapWriteGnuplotAction: public WriteGnuplotAction {
+  public:
+    VertexSE3ExpmapWriteGnuplotAction();
+    virtual HyperGraphElementAction* operator()(HyperGraph::HyperGraphElement* element, 
+        HyperGraphElementAction::Parameters* params_ );
+};
+
+#ifdef G2O_HAVE_OPENGL
+  /**
+   * \brief visualize the 3D pose vertex
+   */
+  class G2O_TYPES_SLAM3D_API VertexSE3ExpmapDrawAction: public DrawAction{
+    public:
+      VertexSE3ExpmapDrawAction();
+      virtual HyperGraphElementAction* operator()(HyperGraph::HyperGraphElement* element, HyperGraphElementAction::Parameters* params_);
+    protected:
+      virtual bool refreshPropertyPtrs(HyperGraphElementAction::Parameters* params_);
+      FloatProperty* _triangleX, *_triangleY;
+  };
+#endif
 
 /**
  * \brief 6D edge between two Vertex6

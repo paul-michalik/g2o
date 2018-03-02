@@ -105,7 +105,7 @@ public:
 /**
  * \brief write the vertex to some Gnuplot data file
  */
-class VertexSE3ExpmapWriteGnuplotAction: public WriteGnuplotAction {
+class G2O_TYPES_SBA_API VertexSE3ExpmapWriteGnuplotAction: public WriteGnuplotAction {
   public:
     VertexSE3ExpmapWriteGnuplotAction();
     virtual HyperGraphElementAction* operator()(HyperGraph::HyperGraphElement* element, 
@@ -116,7 +116,7 @@ class VertexSE3ExpmapWriteGnuplotAction: public WriteGnuplotAction {
   /**
    * \brief visualize the 3D pose vertex
    */
-  class G2O_TYPES_SLAM3D_API VertexSE3ExpmapDrawAction: public DrawAction{
+  class G2O_TYPES_SBA_API VertexSE3ExpmapDrawAction: public DrawAction{
     public:
       VertexSE3ExpmapDrawAction();
       virtual HyperGraphElementAction* operator()(HyperGraph::HyperGraphElement* element, HyperGraphElementAction::Parameters* params_);
@@ -153,7 +153,7 @@ class G2O_TYPES_SBA_API EdgeSE3Expmap : public BaseBinaryEdge<6, SE3Quat, Vertex
 /**
  * \brief Output the pose-pose constraint to Gnuplot data file
  */
-class G2O_TYPES_SLAM3D_API EdgeSE3ExpmapWriteGnuplotAction: public WriteGnuplotAction {
+class G2O_TYPES_SBA_API EdgeSE3ExpmapWriteGnuplotAction: public WriteGnuplotAction {
 public:
   EdgeSE3ExpmapWriteGnuplotAction();
   virtual HyperGraphElementAction* operator()(HyperGraph::HyperGraphElement* element, 
@@ -164,7 +164,7 @@ public:
 /**
  * \brief Visualize a 3D pose-pose constraint
  */
-class G2O_TYPES_SLAM3D_API EdgeSE3ExpmapDrawAction: public DrawAction{
+class G2O_TYPES_SBA_API EdgeSE3ExpmapDrawAction: public DrawAction{
 public:
   EdgeSE3ExpmapDrawAction();
   virtual HyperGraphElementAction* operator()(HyperGraph::HyperGraphElement* element, 

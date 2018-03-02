@@ -56,22 +56,7 @@ set "VcPkgDeps=eigen3 suitesparse clapack openblas ceres qt5-base"
 call "%VcPkgDir%\vcpkg.exe" upgrade %VcPkgDeps% --no-dry-run --triplet %VcPkgTriplet%
 call "%VcPkgDir%\vcpkg.exe" install %VcPkgDeps% --triplet %VcPkgTriplet%
 
-
-rem ==============================
-rem Download and build QGLViewer.
-rem ==============================
-powershell.exe -NoProfile -ExecutionPolicy Bypass -command "Invoke-WebRequest 'http://www.libqglviewer.com/src/libQGLViewer-2.7.1.zip' -OutFile libQGLViewer-2.7.1.zip" 
-powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('libQGLViewer-2.7.1.zip', './../../Thirdparty/'); }"
-del libQGLViewer-2.7.1.zip
-
-set "QGLViewerPath=%~dp0..\..\Thirdparty\libQGLViewer-2.7.1\"
-
-call "%PROGRAMFILES(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" %Platform%
-
-set Path=%VcPkgDir%\installed\%VcPkgTriplet%\tools\qt5;%Path%
-cd /d %QGLViewerPath%\QGLViewer
-call qmake %QGLViewerPath%\libQGLViewer-2.7.1.pro -spec win32-msvc
-call nmake
-set "QGLVIEWERROOT=%QGLViewerPath%\QGLViewer"
+set "ThirdpartyPath=%~dp0..\..\Thirdparty"
+set "QGLVIEWERROOT=%ThirdpartyPath%\bin\%VcPkgTriplet%;%ThirdpartyPath%\lib\%VcPkgTriplet%;%ThirdpartyPath%\include"
 
 

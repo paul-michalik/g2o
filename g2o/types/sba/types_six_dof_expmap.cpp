@@ -139,7 +139,7 @@ HyperGraphElementAction* VertexSE3ExpmapWriteGnuplotAction::operator()(HyperGrap
 }
 
 #ifdef G2O_HAVE_OPENGL
-void drawTriangle(float xSize, float ySize){
+static void drawTriangle(float xSize, float ySize){
   Vector3F p[3];
   glBegin(GL_TRIANGLES);
   p[0] << 0., 0., 0.;

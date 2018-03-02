@@ -57,6 +57,6 @@ call "%VcPkgDir%\vcpkg.exe" upgrade %VcPkgDeps% --no-dry-run --triplet %VcPkgTri
 call "%VcPkgDir%\vcpkg.exe" install %VcPkgDeps% --triplet %VcPkgTriplet%
 
 set "ThirdpartyPath=%~dp0..\..\Thirdparty"
-set "QGLVIEWERROOT=%ThirdpartyPath%\bin\%VcPkgTriplet%;%ThirdpartyPath%\lib\%VcPkgTriplet%;%ThirdpartyPath%\include"
+set "QGLVIEWERROOT=%ThirdpartyPath%\QGLViewer\bin\%VcPkgTriplet%;%ThirdpartyPath%\QGLViewer\lib\%VcPkgTriplet%;%ThirdpartyPath%\QGLViewer\include"
 
 

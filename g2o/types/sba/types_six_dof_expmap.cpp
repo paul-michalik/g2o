@@ -50,9 +50,10 @@ G2O_REGISTER_TYPE(EDGE_STEREO_SE3_PROJECT_XYZONLYPOSE:EXPMAP, EdgeStereoSE3Proje
 G2O_REGISTER_TYPE(PARAMS_CAMERAPARAMETERS, CameraParameters);
 
 G2O_REGISTER_ACTION(VertexSE3ExpmapWriteGnuplotAction);
-
+G2O_REGISTER_ACTION(EdgeSE3ExpmapWriteGnuplotAction);
 #ifdef G2O_HAVE_OPENGL
   G2O_REGISTER_ACTION(VertexSE3ExpmapDrawAction);
+  G2O_REGISTER_ACTION(EdgeSE3ExpmapDrawAction);
 #endif
 
 CameraParameters
@@ -188,13 +189,10 @@ HyperGraphElementAction* VertexSE3ExpmapDrawAction::operator()(HyperGraph::Hyper
 
   glColor3f(POSE_VERTEX_COLOR);
   glPushMatrix();
-  // shanmukha: todo
-
   auto t = that->estimate();
   Isometry3 result = (Isometry3) t.rotation();
   result.translation() = t.translation();
   glMultMatrixd(result.matrix().cast<double>().eval().data());
-  //glMultMatrixd(that->estimate().matrix().cast<double>().eval().data());
   opengl::drawArrow2D(_triangleX->value(), _triangleY->value(), _triangleX->value()*.3f);
   drawCache(that->cacheContainer(), params_);
   drawUserData(that->userData(), params_);
@@ -234,6 +232,73 @@ bool EdgeSE3Expmap::write(std::ostream& os) const {
     }
   return os.good();
 }
+
+EdgeSE3ExpmapWriteGnuplotAction::EdgeSE3ExpmapWriteGnuplotAction() : WriteGnuplotAction(typeid(EdgeSE3Expmap).name()) {}
+
+HyperGraphElementAction *EdgeSE3ExpmapWriteGnuplotAction::operator()(HyperGraph::HyperGraphElement *element, HyperGraphElementAction::Parameters *params_)
+{
+  if (typeid(*element).name() != _typeName)
+    return 0;
+  WriteGnuplotAction::Parameters *params = static_cast<WriteGnuplotAction::Parameters *>(params_);
+  if (!params->os)
+  {
+    std::cerr << __PRETTY_FUNCTION__ << ": warning, on valid os specified" << std::endl;
+    return 0;
+  }
+
+  EdgeSE3Expmap *e = static_cast<EdgeSE3Expmap *>(element);
+  VertexSE3Expmap *fromEdge = static_cast<VertexSE3Expmap *>(e->vertices()[0]);
+  VertexSE3Expmap *toEdge = static_cast<VertexSE3Expmap *>(e->vertices()[1]);
+  Vector6 fromV, toV;
+
+  fromV = fromEdge->estimate().toMinimalVector();
+  toV = toEdge->estimate().toMinimalVector();
+
+  for (int i = 0; i < 6; i++)
+  {
+    *(params->os) << fromV[i] << " ";
+  }
+  for (int i = 0; i < 6; i++)
+  {
+    *(params->os) << toV[i] << " ";
+  }
+  *(params->os) << std::endl;
+  return this;
+}
+
+#ifdef G2O_HAVE_OPENGL
+EdgeSE3ExpmapDrawAction::EdgeSE3ExpmapDrawAction() : DrawAction(typeid(EdgeSE3Expmap).name())
+{
+}
+
+HyperGraphElementAction *EdgeSE3ExpmapDrawAction::operator()(HyperGraph::HyperGraphElement *element,
+                                                             HyperGraphElementAction::Parameters *params_)
+{
+  if (typeid(*element).name() != _typeName)
+    return 0;
+  refreshPropertyPtrs(params_);
+  if (!_previousParams)
+    return this;
+
+  if (_show && !_show->value())
+    return this;
+
+  EdgeSE3Expmap *e = static_cast<EdgeSE3Expmap *>(element);
+  VertexSE3Expmap *fromEdge = static_cast<VertexSE3Expmap *>(e->vertices()[0]);
+  VertexSE3Expmap *toEdge = static_cast<VertexSE3Expmap *>(e->vertices()[1]);
+  if (!fromEdge || !toEdge)
+    return this;
+  glColor3f(POSE_EDGE_COLOR);
+  glPushAttrib(GL_ENABLE_BIT);
+  glDisable(GL_LIGHTING);
+  glBegin(GL_LINES);
+  glVertex3f((float)fromEdge->estimate().translation().x(), (float)fromEdge->estimate().translation().y(), (float)fromEdge->estimate().translation().z());
+  glVertex3f((float)toEdge->estimate().translation().x(), (float)toEdge->estimate().translation().y(), (float)toEdge->estimate().translation().z());
+  glEnd();
+  glPopAttrib();
+  return this;
+}
+#endif
 
 EdgeProjectXYZ2UV::EdgeProjectXYZ2UV() : BaseBinaryEdge<2, Vector2, VertexSBAPointXYZ, VertexSE3Expmap>() {
   _cam = 0;

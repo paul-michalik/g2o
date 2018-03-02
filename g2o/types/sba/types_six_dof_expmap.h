@@ -150,6 +150,27 @@ class G2O_TYPES_SBA_API EdgeSE3Expmap : public BaseBinaryEdge<6, SE3Quat, Vertex
     virtual void linearizeOplus();
 };
 
+/**
+ * \brief Output the pose-pose constraint to Gnuplot data file
+ */
+class G2O_TYPES_SLAM3D_API EdgeSE3ExpmapWriteGnuplotAction: public WriteGnuplotAction {
+public:
+  EdgeSE3ExpmapWriteGnuplotAction();
+  virtual HyperGraphElementAction* operator()(HyperGraph::HyperGraphElement* element, 
+          HyperGraphElementAction::Parameters* params_);
+};
+
+#ifdef G2O_HAVE_OPENGL
+/**
+ * \brief Visualize a 3D pose-pose constraint
+ */
+class G2O_TYPES_SLAM3D_API EdgeSE3ExpmapDrawAction: public DrawAction{
+public:
+  EdgeSE3ExpmapDrawAction();
+  virtual HyperGraphElementAction* operator()(HyperGraph::HyperGraphElement* element, 
+          HyperGraphElementAction::Parameters* params_);
+};
+#endif
 
 class G2O_TYPES_SBA_API EdgeProjectXYZ2UV : public  BaseBinaryEdge<2, Vector2, VertexSBAPointXYZ, VertexSE3Expmap>{
   public:

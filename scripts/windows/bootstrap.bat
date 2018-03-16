@@ -53,8 +53,8 @@ rem ==============================
 rem Upgrade and Install packages.
 rem ==============================
 set "VcPkgDeps=eigen3 suitesparse clapack openblas ceres qt5-base"
-echo call "%VcPkgDir%\vcpkg.exe" upgrade %VcPkgDeps% --no-dry-run --triplet %VcPkgTriplet%
-echo call "%VcPkgDir%\vcpkg.exe" install %VcPkgDeps% --triplet %VcPkgTriplet%
+call "%VcPkgDir%\vcpkg.exe" upgrade %VcPkgDeps% --no-dry-run --triplet %VcPkgTriplet%
+call "%VcPkgDir%\vcpkg.exe" install %VcPkgDeps% --triplet %VcPkgTriplet%
 
 rem ==============================
 rem Prepare vendor folder. Mimics the vcpkg folder structure
@@ -65,10 +65,8 @@ if not exist "%VendorDir%\downloads" md "%VendorDir%\downloads"
 if not exist "%VendorDir%\buildtrees" md "%VendorDir%\buildtrees"
 if not exist "%VendorDir%\installed\%Platform%-windows" md "%VendorDir%\installed\%Platform%-windows"
 
-rem ==============================
-rem Download and build QGLViewer.
-rem ==============================
 call :InstallQGLViewer 
+rem call :InstallOtherStuffNotInVcpkg
 
 goto :eof
 
@@ -83,7 +81,7 @@ setlocal
     if not exist "%VendorDir%\buildtrees\libQGLViewer-2.7.1" (
         pushd "%VendorDir%\buildtrees"
         rem Do we really have to be that conservative about the ancient Posh version?
-        powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('libQGLViewer-2.7.1.zip', 'libQGLViewer-2.7.1'); }"
+        powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('%VendorDir%\downloads\libQGLViewer-2.7.1.zip', '.'); }"
         popd
     )
 
@@ -91,14 +89,19 @@ setlocal
         pushd "%VendorDir%\buildtrees\libQGLViewer-2.7.1"
         md %VcPkgTriplet%-rel
         pushd %VcPkgTriplet%-rel
-        call :BuildQGLViewer Release
+        call :BuildQGLViewer release "%VendorDir%\buildtrees\libQGLViewer-2.7.1\%VcPkgTriplet%-rel"
         popd
-
-        md %VcPkgTriplet%-dbg
-        pushd %VcPkgTriplet%-dbg
-        call :BuildQGLViewer Debug
         popd
     )
+
+    rem if not exist "%VendorDir%\buildtrees\libQGLViewer-2.7.1\%VcPkgTriplet%-dbg" ( 
+    rem     pushd "%VendorDir%\buildtrees\libQGLViewer-2.7.1"
+    rem     md %VcPkgTriplet%-dbg
+    rem     pushd %VcPkgTriplet%-dbg
+    rem     call :BuildQGLViewer debug
+    rem     popd
+    rem     popd
+    rem )
 endlocal & set "QGLVIEWERROOT="
 
 goto :eof
@@ -106,24 +109,24 @@ goto :eof
 :BuildQGLViewer 
 setlocal
     set BuildType=%~1
+    set BuildDir=%~2
     call "%PROGRAMFILES(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" %Platform%
     set "Path=%VcPkgDir%\installed\%VcPkgTriplet%\tools\qt5;%Path%"
-    call qmake ..\libQGLViewer-2.7.1.pro -spec win32-msvc CONFIG+=%BuildType%
-    set "CL=/MP"
+    qmake ..\libQGLViewer-2.7.1.pro -d CONFIG+=%BuildType% DESTDIR+="%BuildDir%"
     call nmake
 
-    for /F "tokens=*" %%G in ('dir /b /s *.dll') do (
-        xcopy "%%G" "%VendorDir%\%VcPkgTriplet%\bin\" /sy
-    )
-    for /F "tokens=*" %%G in ('dir /b /s *.lib') do (
-        xcopy "%%G" "%VendorDir%\%VcPkgTriplet%\lib\" /sy
-    )
-    for /F "tokens=*" %%G in ('dir /b /s *.exp') do (
-        xcopy "%%G" "%VendorDir%\%VcPkgTriplet%\lib\" /sy
-    )
-    for /F "tokens=*" %%G in ('dir /b /s *.h') do (
-        xcopy "%%G" "%VendorDir%\%VcPkgTriplet%\include\QGLViewer" /sy
-    )
+    rem for /F "tokens=*" %%G in ('dir /b /s *.dll') do (
+    rem     call xcopy "%%G" "%VendorDir%\%VcPkgTriplet%\bin\" /sy
+    rem )
+    rem for /F "tokens=*" %%G in ('dir /b /s *.lib') do (
+    rem     call xcopy "%%G" "%VendorDir%\%VcPkgTriplet%\lib\" /sy
+    rem )
+    rem for /F "tokens=*" %%G in ('dir /b /s *.exp') do (
+    rem     call xcopy "%%G" "%VendorDir%\%VcPkgTriplet%\lib\" /sy
+    rem )
+    rem for /F "tokens=*" %%G in ('dir /b /s *.h') do (
+    rem     call xcopy "%%G" "%VendorDir%\%VcPkgTriplet%\include\QGLViewer" /sy
+    rem )
 endlocal
 
 goto :eof

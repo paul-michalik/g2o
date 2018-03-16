@@ -53,21 +53,17 @@ rem ==============================
 rem Upgrade and Install packages.
 rem ==============================
 set "VcPkgDeps=eigen3 suitesparse clapack openblas ceres qt5-base"
-call "%VcPkgDir%\vcpkg.exe" upgrade %VcPkgDeps% --no-dry-run --triplet %VcPkgTriplet%
-call "%VcPkgDir%\vcpkg.exe" install %VcPkgDeps% --triplet %VcPkgTriplet%
+echo call "%VcPkgDir%\vcpkg.exe" upgrade %VcPkgDeps% --no-dry-run --triplet %VcPkgTriplet%
+echo call "%VcPkgDir%\vcpkg.exe" install %VcPkgDeps% --triplet %VcPkgTriplet%
 
 rem ==============================
-rem Prepare external folder. Mimics the vcpkg structure
+rem Prepare vendor folder. Mimics the vcpkg folder structure
 rem ==============================
-
-set "ExtDir=%~dp0..\..\ext"
-set "ExtDir=%~dp0..\..\ext"
-echo if not exist "%ExtDir%" md "%ExtDir%"
-echo if not exist "%ExtDir%\downloads" md "%ExtDir%\downloads"
-echo if not exist "%ExtDir%\buildtrees" md "%ExtDir%\buildtrees"
-echo if not exist "%ExtDir%\installed\%Platform%-windows" md "%ExtDir%\installed\%Platform%-windows"
-
-exit /b 0
+set "VendorDir=%~dp0..\..\.vendor"
+if not exist "%VendorDir%" md "%VendorDir%"
+if not exist "%VendorDir%\downloads" md "%VendorDir%\downloads"
+if not exist "%VendorDir%\buildtrees" md "%VendorDir%\buildtrees"
+if not exist "%VendorDir%\installed\%Platform%-windows" md "%VendorDir%\installed\%Platform%-windows"
 
 rem ==============================
 rem Download and build QGLViewer.
@@ -78,21 +74,21 @@ goto :eof
 
 :InstallQGLViewer
 setlocal
-    if not exist "%ExtDir%\downloads\libQGLViewer-2.7.1.zip" (
-        pushd "%ExtDir%\downloads"
+    if not exist "%VendorDir%\downloads\libQGLViewer-2.7.1.zip" (
+        pushd "%VendorDir%\downloads"
         powershell.exe -NoProfile -ExecutionPolicy Bypass -command "Invoke-WebRequest 'http://www.libqglviewer.com/src/libQGLViewer-2.7.1.zip' -OutFile libQGLViewer-2.7.1.zip
         popd
     )
 
-    if not exist "%ExtDir%\buildtrees\libQGLViewer-2.7.1" (
-        pushd "%ExtDir%\buildtrees"
+    if not exist "%VendorDir%\buildtrees\libQGLViewer-2.7.1" (
+        pushd "%VendorDir%\buildtrees"
         rem Do we really have to be that conservative about the ancient Posh version?
         powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('libQGLViewer-2.7.1.zip', 'libQGLViewer-2.7.1'); }"
         popd
     )
 
-    if not exist "%ExtDir%\buildtrees\libQGLViewer-2.7.1\%VcPkgTriplet%-rel" ( 
-        pushd "%ExtDir%\buildtrees\libQGLViewer-2.7.1"
+    if not exist "%VendorDir%\buildtrees\libQGLViewer-2.7.1\%VcPkgTriplet%-rel" ( 
+        pushd "%VendorDir%\buildtrees\libQGLViewer-2.7.1"
         md %VcPkgTriplet%-rel
         pushd %VcPkgTriplet%-rel
         call :BuildQGLViewer Release
@@ -117,22 +113,27 @@ setlocal
     call nmake
 
     for /F "tokens=*" %%G in ('dir /b /s *.dll') do (
-        xcopy "%%G" "%ExtDir%\%VcPkgTriplet%\bin\" /sy
+        xcopy "%%G" "%VendorDir%\%VcPkgTriplet%\bin\" /sy
     )
     for /F "tokens=*" %%G in ('dir /b /s *.lib') do (
-        xcopy "%%G" "%ExtDir%\%VcPkgTriplet%\lib\" /sy
+        xcopy "%%G" "%VendorDir%\%VcPkgTriplet%\lib\" /sy
     )
     for /F "tokens=*" %%G in ('dir /b /s *.exp') do (
-        xcopy "%%G" "%ExtDir%\%VcPkgTriplet%\lib\" /sy
+        xcopy "%%G" "%VendorDir%\%VcPkgTriplet%\lib\" /sy
     )
     for /F "tokens=*" %%G in ('dir /b /s *.h') do (
-        xcopy "%%G" "%ExtDir%\%VcPkgTriplet%\include\QGLViewer" /sy
+        xcopy "%%G" "%VendorDir%\%VcPkgTriplet%\include\QGLViewer" /sy
     )
 endlocal
 
 goto :eof
 
-endlocal & set "VcPkgDir=%VcPkgDir%" & set "VcPkgTriplet=%VcPkgTriplet%" & set "Platform=%Platform%" & set "Toolset=%Toolset%" & set "Platform=%Platform%"
+endlocal & set "VendorDir=%VendorDir%" & ^
+           set "VcPkgDir=%VcPkgDir%" & ^
+           set "VcPkgTriplet=%VcPkgTriplet%" & ^
+           set "Platform=%Platform%" & ^
+           set "Toolset=%Toolset%" & ^
+           set "Platform=%Platform%"
 
 
 

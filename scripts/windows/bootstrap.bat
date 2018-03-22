@@ -89,7 +89,7 @@ setlocal
         pushd "%VendorDir%\buildtrees\libQGLViewer-2.7.1"
         md %VcPkgTriplet%-rel
         pushd %VcPkgTriplet%-rel
-        call :BuildQGLViewer release "%VendorDir%\buildtrees\libQGLViewer-2.7.1\%VcPkgTriplet%-rel"
+        call :BuildQGLViewer Release
         popd
         popd
     )
@@ -98,7 +98,7 @@ setlocal
     rem     pushd "%VendorDir%\buildtrees\libQGLViewer-2.7.1"
     rem     md %VcPkgTriplet%-dbg
     rem     pushd %VcPkgTriplet%-dbg
-    rem     call :BuildQGLViewer debug
+    rem     call :BuildQGLViewer Debug
     rem     popd
     rem     popd
     rem )
@@ -112,8 +112,15 @@ setlocal
     set BuildDir=%~2
     call "%PROGRAMFILES(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" %Platform%
     set "Path=%VcPkgDir%\installed\%VcPkgTriplet%\tools\qt5;%Path%"
-    qmake ..\libQGLViewer-2.7.1.pro -d CONFIG+=%BuildType% DESTDIR+="%BuildDir%"
-    call nmake
+    if /i "%BuildType%"=="Release" (
+        echo qmake ..\libQGLViewer-2.7.1.pro "CONFIG-=debug" "CONFIG+=release" DESTDIR=.
+    )
+
+    if /i "%BuildType%"=="Debug" (
+        echo qmake ..\libQGLViewer-2.7.1.pro "CONFIG-=release" "CONFIG+=debug" DESTDIR=.
+    )
+
+    echo call nmake /X "nmake-%BuildType%.errlog.txt" > "nmake-%BuildType%.log.txt"
 
     rem for /F "tokens=*" %%G in ('dir /b /s *.dll') do (
     rem     call xcopy "%%G" "%VendorDir%\%VcPkgTriplet%\bin\" /sy

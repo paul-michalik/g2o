@@ -678,6 +678,9 @@ bool EdgeSE3ProjectXYZOnlyPose::read(std::istream &is) {
       if (i != j)
         information()(j, i) = information()(i, j);
     }
+  is >> Xw;
+  is >> fx >> fy;
+  is >> cx >> cy;
   return true;
 }
 
@@ -691,6 +694,10 @@ bool EdgeSE3ProjectXYZOnlyPose::write(std::ostream &os) const {
     for (int j = i; j < 2; j++) {
       os << " " << information()(i, j);
     }
+  
+  os << " " << Xw;
+  os << " " << fx << " " << fy;
+  os << " " << cx << " " << cy;
   return os.good();
 }
 
